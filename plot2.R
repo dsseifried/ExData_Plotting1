@@ -5,24 +5,26 @@ if (!file.exists('PowerConsumption.zip')) {
 }
 unzip('PowerConsumption.zip',exdir = './Class4Week1')
 
+##Load packages
 library(dplyr)
 
+##Load and Filter Data
 readings<-read.table(file = './Class4Week1/household_power_consumption.txt', header = TRUE, sep = ";",na.strings = "?",stringsAsFactors = FALSE)
 readings2<-filter(readings, Date %in% c("1/2/2007","2/2/2007"))
 
-##object.size(readings) & Remove
+##object.size(readings) & Remove Original because of size
 rm(readings)
 
 ##Format Date as Needed
-
 readings2$Date <- as.Date(readings2$Date,"%d/%m/%Y")
 readings2$DtTm <- as.POSIXct(paste(readings2$Date,readings2$Time))
 
 ##Build Chart 
+par(mfrow=c(1,1))
 plot(readings2$DtTm,readings2$Global_active_power,xlab="", ylab="Global Active Power (kilowatts)",type="l")
 
 ##Make png file
-dev.copy(png, file = "./GitHub/ExData_Plotting1/plot2.png")
+dev.copy(png, file = "./GitHub/ExData_Plotting1/plot2.png",height=480, width=480)
 
 ##Close Device
 dev.off()
